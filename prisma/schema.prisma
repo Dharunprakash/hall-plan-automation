@@ -11,6 +11,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum HallArrangementType {
+  CHECKERBOARD
+  ALTERNATE
+  NORMAL
+}
+
 // The User model is used by the NextAuth.js authentication library
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -22,14 +28,106 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  conversationIds String[]       @db.ObjectId
-  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
-
-  seenMessageIds String[]  @db.ObjectId
-  seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
-
   accounts Account[]
-  messages Message[]
+}
+
+model College {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String?
+  district    String?
+  description String?
+
+  code  String?
+  aishe String?
+
+  state   String?
+  pincode String?
+  address String?
+  phone   String?
+  email   String?
+  dept    Department[]
+}
+
+model Department {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  code      String?
+  collegeId String    @db.ObjectId
+  college   College   @relation(fields: [collegeId], references: [id])
+  students  Student[]
+  hall      Hall[]
+}
+
+model Student {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  regno    String  @unique
+  rollno   String
+  name     String
+  dept     String
+  year     String
+  section  String
+  vertical String? @default("NONE")
+  batch    String? @default("2021-2025")
+
+  hallId String?      @db.ObjectId
+  hall   HallHistory? @relation(fields: [hallId], references: [id])
+
+  departmentId String     @db.ObjectId
+  department   Department @relation(fields: [departmentId], references: [id])
+  Seat         Seat[]
+
+  @@index([rollno, departmentId, year, section], name: "student_index")
+  @@index([rollno, departmentId, year, section, batch], name: "student_index_batch")
+}
+
+model Hall {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  capacity Int
+
+  rows        Int
+  cols        Int
+  seats       Seat[]
+  hallno      String              @unique
+  type        HallArrangementType @default(NORMAL)
+  hallHistory HallHistory[]
+
+  departmentId String     @db.ObjectId
+  department   Department @relation(fields: [departmentId], references: [id])
+}
+
+model Seat {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  row       Int
+  col       Int
+  status    String
+  student   Student? @relation(fields: [studentId], references: [id])
+  studentId String?  @db.ObjectId
+  hallId    String   @db.ObjectId
+  hall      Hall     @relation(fields: [hallId], references: [id])
+
+  historyId String?      @db.ObjectId
+  history   HallHistory? @relation(fields: [historyId], references: [id])
+}
+
+model History {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  hallHistory HallHistory[]
+}
+
+model HallHistory {
+  id       String              @id @default(auto()) @map("_id") @db.ObjectId
+  hallId   String              @db.ObjectId
+  hall     Hall                @relation(fields: [hallId], references: [id])
+  rows     Int
+  cols     Int
+  seats    Seat[]
+  type     HallArrangementType
+  status   String
+  modified DateTime            @default(now())
+  students Student[]
+
+  historyId String  @db.ObjectId
+  history   History @relation(fields: [historyId], references: [id])
 }
 
 // The Account model is used by the NextAuth.js authentication library
@@ -52,52 +150,20 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-// The Conversation and Message models are used to store chat messages
-model Conversation {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt     DateTime @default(now())
-  lastMessageAt DateTime @default(now())
-  name          String?
-  isGroup       Boolean?
-
-  messagesIds String[]  @db.ObjectId
-  messages    Message[]
-
-  userIds String[] @db.ObjectId
-  users   User[]   @relation(fields: [userIds], references: [id])
-}
-model Message {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  body      String?
-  image     String?
-  createdAt DateTime @default(now())
-
-  seenIds String[] @db.ObjectId
-  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
-
-  conversationId String       @db.ObjectId
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-  edited  Boolean @default(false)
-  deleted Boolean @default(false)
-
-  senderId String @db.ObjectId
-  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
-}
-
 // The PasswordResetToken and VerificationToken models are used by the NextAuth.js authentication library
 model PasswordResetToken {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  token String @unique
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
+
 model VerificationToken {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  token String @unique
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
