@@ -10,7 +10,7 @@ import Routes from "./routes"
 
 const Navbar = () => {
   return (
-    <nav className="fixed inset-x-0 top-0 flex items-center justify-between gap-3 border-b border-b-slate-100 bg-white p-4">
+    <nav className="fixed inset-x-0 top-0 z-50 flex !h-16 items-center justify-between gap-3 border-b border-b-slate-100 bg-white p-4">
       {/* LOGO */}
       <div className="flex items-center gap-3">
         <Link href="/" className="mx-2">

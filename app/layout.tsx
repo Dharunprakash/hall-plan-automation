@@ -31,11 +31,7 @@ export default async function RootLayout({
         <html lang="en">
           <body className={inter.className}>
             <ToastProvider />
-            <div className="dark:bg-grid-medium-white/[0.2] bg-grid-small-black/[0.2] relative h-screen  w-full bg-white dark:bg-black">
-              {/* Radial gradient for the container to give a faded look */}
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
-              {children}
-            </div>
+            <main className="h-full w-full">{children}</main>
           </body>
         </html>
       </TRPCProvider>
