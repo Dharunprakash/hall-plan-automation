@@ -7,6 +7,11 @@ import DialogModal from "@/components/modal/dialog-modal"
 import EditModal from "@/components/modal/edit-modal"
 
 import DepartmentCard from "./_components/department-card"
+import {
+  CollegeDetailsForm,
+  DepartmentForm,
+  EditImageForm,
+} from "./_components/forms"
 
 const departments: Department[] = [
   {
@@ -65,11 +70,13 @@ const page = () => {
   return (
     <div className="h-full w-full">
       <div className="relative w-full sm:h-40 md:h-60">
-        <EditModal
-          title="Edit Cover Image"
-          description="Edit the college cover"
-        >
-          <></>
+        <EditModal>
+          <DialogModal
+            title="Edit Cover Image"
+            description="Edit the cover image"
+          >
+            <EditImageForm />
+          </DialogModal>
         </EditModal>
         <Image
           src="https://picsum.photos/id/11/1600/600"
@@ -81,12 +88,13 @@ const page = () => {
         />
       </div>
       <div className="relative z-50 mx-auto -mt-20 h-40 w-40 rounded-sm">
-        <EditModal
-          title="Edit College Logo"
-          description="Edit the college logo"
-          className="rounded-sm"
-        >
-          <></>
+        <EditModal className="rounded-sm">
+          <DialogModal
+            title="Edit College Logo"
+            description="Edit the college logo"
+          >
+            <EditImageForm />
+          </DialogModal>
         </EditModal>
         <Image
           src="https://picsum.photos/id/88/160/160"
@@ -99,11 +107,13 @@ const page = () => {
       </div>
       <div className="w-full">
         <div className="relative mx-auto max-w-2xl">
-          <EditModal
-            title="Edit college Details"
-            description="Edit college details"
-          >
-            <></>
+          <EditModal>
+            <DialogModal
+              title="Edit College Details"
+              description="Edit college details"
+            >
+              <CollegeDetailsForm />
+            </DialogModal>
           </EditModal>
           <h1 className="mt-2 text-center text-2xl">
             PSNA College of Engineering and Technology
@@ -127,12 +137,12 @@ const page = () => {
             title="Add Department"
             description="Add a new department to the college."
           >
-            <></>
+            <DepartmentForm />
           </DialogModal>
         </div>
         <div className="grid grid-cols-1 gap-x-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {departments.map((department) => (
-            <DepartmentCard {...department} className="" />
+            <DepartmentCard {...department} className="" key={department.id} />
           ))}
         </div>
       </div>

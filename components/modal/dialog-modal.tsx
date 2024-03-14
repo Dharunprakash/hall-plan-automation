@@ -1,4 +1,7 @@
+"use client"
+
 import React from "react"
+import { Edit2 } from "lucide-react"
 
 import { DialogModalProps } from "@/types/ui"
 import {
@@ -13,22 +16,27 @@ import {
 const DialogModal = ({
   title = "Dialog Title",
   description = "Dialog Description",
-  trigger = <button>Open Dialog</button>,
+  trigger = <Edit2 width={15} height={15} />,
   children,
 }: DialogModalProps) => {
+  // fix hydration issue
+  const [isMounted, setIsMounted] = React.useState(false)
+  React.useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) return null
   return (
-    <div>
-      <Dialog>
-        <DialogTrigger>{trigger}</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
-            {children}
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </div>
+    <Dialog>
+      <DialogTrigger>{trigger}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+          {children}
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
   )
 }
 

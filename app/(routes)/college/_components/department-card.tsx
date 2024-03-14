@@ -2,7 +2,10 @@ import React from "react"
 import { Department } from "@prisma/client"
 
 import { cn } from "@/lib/utils"
+import DialogModal from "@/components/modal/dialog-modal"
 import EditModal from "@/components/modal/edit-modal"
+
+import DepartmentForm from "./forms/department"
 
 const DepartmentCard = ({
   id,
@@ -17,11 +20,13 @@ const DepartmentCard = ({
         className
       )}
     >
-      <EditModal
-        title="Edit Department"
-        description="Edit the department details"
-      >
-        <></>
+      <EditModal>
+        <DialogModal
+          title="Edit Department"
+          description="Edit Department details"
+        >
+          <DepartmentForm />
+        </DialogModal>
       </EditModal>
       <div className="flex items-center rounded-full bg-slate-300 p-1 px-2 text-center">
         {code}
