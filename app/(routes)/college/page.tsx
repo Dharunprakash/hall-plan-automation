@@ -107,7 +107,7 @@ const page = () => {
       </div>
       <div className="w-full">
         <div className="relative mx-auto max-w-2xl">
-          <EditModal>
+          <EditModal className="bg-transparent opacity-100">
             <DialogModal
               title="Edit College Details"
               description="Edit college details"

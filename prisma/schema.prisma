@@ -64,7 +64,7 @@ model Student {
   rollno   String
   name     String
   dept     String
-  year     String
+  year     Int
   section  String
   vertical String? @default("NONE")
   batch    String? @default("2021-2025")

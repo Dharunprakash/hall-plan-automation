@@ -1,5 +1,7 @@
 import { fontFamily } from "tailwindcss/defaultTheme"
 
+const { nextui } = require("@nextui-org/react")
+
 const svgToDataUri = require("mini-svg-data-uri")
 
 const colors = require("tailwindcss/colors")
@@ -10,7 +12,11 @@ const {
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
+  content: [
+    "app/**/*.{ts,tsx}",
+    "components/**/*.{ts,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     container: {
       center: true,
@@ -117,6 +123,7 @@ module.exports = {
     },
   },
   plugins: [
+    nextui(),
     require("tailwindcss-animate"),
     addVariablesForColors,
     function ({ matchUtilities, theme }: any) {
