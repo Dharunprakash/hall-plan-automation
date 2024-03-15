@@ -1,11 +1,8 @@
 "use client"
 
-import React from "react"
+import React, { useMemo } from "react"
 import {
-  User as Avatar,
   Button,
-  Chip,
-  ChipProps,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -23,13 +20,7 @@ import {
   Tooltip,
 } from "@nextui-org/react"
 import { Student } from "@prisma/client"
-import {
-  ChevronDownIcon,
-  DeleteIcon,
-  Pencil,
-  PlusIcon,
-  SearchIcon,
-} from "lucide-react"
+import { ChevronDownIcon, DeleteIcon, PlusIcon, SearchIcon } from "lucide-react"
 import toast from "react-hot-toast"
 
 import DialogModal from "@/components/modal/dialog-modal"
@@ -40,9 +31,18 @@ import StudentForm from "./student-form"
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"]
+const INITIAL_VISIBLE_COLUMNS = [
+  "rollno",
+  "regno",
+  "name",
+  "dept",
+  "year",
+  "section",
+  "vertical",
+  "actions",
+]
 
-export default function App() {
+export default function StudentTable() {
   const [filterValue, setFilterValue] = React.useState("")
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
@@ -69,9 +69,8 @@ export default function App() {
   const handleClick = async (id: string) => {
     await deleteUser.mutateAsync(id)
   }
-  // @ts-ignore
 
-  const students: Student[] = data?.items
+  const students: Student[] = useMemo(() => data || [], [data])
 
   const pages = Math.ceil(students?.length || 0 / rowsPerPage)
 
@@ -421,7 +420,6 @@ export default function App() {
           {(item: Student) => (
             <TableRow key={item.id}>
               {(columnKey) => (
-                //TODO:do typecheck
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
             </TableRow>
