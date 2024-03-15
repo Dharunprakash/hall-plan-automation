@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import DialogModal from "@/components/modal/dialog-modal"
 import EditModal from "@/components/modal/edit-modal"
 
-import DepartmentForm from "./forms/department"
+import { DepartmentForm } from "./forms"
 
 const DepartmentCard = ({
   id,

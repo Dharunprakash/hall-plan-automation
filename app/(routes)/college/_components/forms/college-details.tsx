@@ -15,31 +15,28 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-
-
 export function CollegeDetailsForm() {
   const collegeSchema = z.object({
-      name: z.string().min(2, {
+    name: z.string().min(2, {
       message: "department name is required",
     }),
-      district: z.string().min(2, {
-          message: "District is required",
-        }),
+    district: z.string().min(2, {
+      message: "District is required",
+    }),
     description: z.string().min(2, {
       message: "Description is required",
-    }
+    }),
   })
   const form = useForm<z.infer<typeof collegeSchema>>({
     resolver: zodResolver(collegeSchema),
-    defalutValues: {
+    defaultValues: {
       name: "",
       district: "",
       description: "",
-    }
+    },
   })
 
-
-  const onSubmit= (data: z.infer<typeof collegeSchema>) =>{
+  const onSubmit = (data: z.infer<typeof collegeSchema>) => {
     console.log(data)
   }
   return (
@@ -50,12 +47,9 @@ export function CollegeDetailsForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Vehicle No</FormLabel>
+              <FormLabel>College Name</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Deptname"
-                />
+                <Input {...field} placeholder="Deptname" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -63,15 +57,12 @@ export function CollegeDetailsForm() {
         />
         <FormField
           control={form.control}
-          name="code"
+          name="district"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Vehicle No</FormLabel>
+              <FormLabel>District</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Deptname"
-                />
+                <Input {...field} placeholder="Deptname" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -82,12 +73,9 @@ export function CollegeDetailsForm() {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Vehicle No</FormLabel>
+              <FormLabel>College Description</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Deptname"
-                />
+                <Input {...field} placeholder="Deptname" />
               </FormControl>
               <FormMessage />
             </FormItem>

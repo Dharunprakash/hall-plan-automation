@@ -15,27 +15,25 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-
-
 export function DepartmentForm() {
   const deptSchema = z.object({
-      name: z.string().min(2, {
+    name: z.string().min(2, {
       message: "department name is required",
     }),
     code: z.string().min(2, {
       message: "department code is required",
-    })
+    }),
   })
   const form = useForm<z.infer<typeof deptSchema>>({
     resolver: zodResolver(deptSchema),
-    defalutValues: {
+
+    defaultValues: {
       name: "",
       code: "",
-    }
+    },
   })
 
-  
-  const onSubmit= (data: z.infer<typeof deptSchema>) =>{
+  const onSubmit = (data: z.infer<typeof deptSchema>) => {
     console.log(data)
   }
   return (
@@ -48,10 +46,7 @@ export function DepartmentForm() {
             <FormItem>
               <FormLabel>Vehicle No</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Deptname"
-                />
+                <Input {...field} placeholder="Deptname" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -64,10 +59,7 @@ export function DepartmentForm() {
             <FormItem>
               <FormLabel>Vehicle No</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Deptname"
-                />
+                <Input {...field} placeholder="Deptname" />
               </FormControl>
               <FormMessage />
             </FormItem>
